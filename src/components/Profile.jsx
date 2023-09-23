@@ -1,4 +1,4 @@
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
@@ -97,6 +97,10 @@ const Profile = ({ user }) => {
 						</button>
 					)}
 				</form>
+			<div className="signOut">
+				<p>Sign Out</p>
+				<FontAwesomeIcon icon={faRightFromBracket} />
+			</div>
 			</div>
 		</div>
 	);
