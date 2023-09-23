@@ -799,10 +799,10 @@ body {
 					padding: 30px;
 					form {
 						display: flex;
-						height: 100%;
+						height: 90%;
 						flex-direction: column;
 						justify-content: space-between;
-						padding: 10% 0px;
+						padding: 5% 0px;
 						.field-group{
 							display: flex;
 							flex-direction: column;
@@ -855,6 +855,18 @@ body {
 							&:hover{
 								background: #6b2668eb;
 							}
+						}
+					}
+					.signOut{
+						height: 10%;
+						width: 100%;
+						display: flex;
+						gap: 20px;
+						justify-content: center;
+						align-items: center;
+						font-size: 14px;
+						p, > svg {
+							cursor: pointer;
 						}
 					}
 				}
