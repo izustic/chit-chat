@@ -1,22 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Chat from "../components/Chat";
 import SideBar from "../components/SideBar";
 
-const Home = () => {
+const Home = ({isSmallScreen}) => {
 	const [selectedChat, setSelectedChat] = useState(null);
-	const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setIsSmallScreen(window.innerWidth <= 900);
-		};
-		window.addEventListener("resize", handleResize);
-		handleResize();
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
 
 	const handleChatSelect = (chat) => {
 		setSelectedChat(chat);
