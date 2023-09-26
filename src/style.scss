@@ -615,6 +615,12 @@ body {
 				> svg {
 					cursor: pointer;
 					margin-right: 10px;
+					transition: transform 0.3s ease;
+
+					&:hover {
+						animation: beat 1s infinite;
+						transform-origin: center;
+					}
 				}
 			}
 			h2 {
@@ -658,90 +664,6 @@ body {
 					}
 				}
 			}
-			.menu-bar {
-				position: absolute;
-				border-top: 2px solid #cc44a1;
-				top: 40;
-				margin-top: 50px;
-				height: 100%;
-				width: 80%;
-				z-index: 4;
-				right: 0;
-				display: flex;
-				flex-direction: column;
-				background: rgba(255, 255, 255, 0.2);
-box-shadow: 0 14px 20px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-				.profileList {
-					display: flex;
-					align-items: center;
-					gap: 15px;
-					padding: 10px;
-					cursor: pointer;
-					&:hover {
-						background-color: #dce1ed;
-					}
-					img {
-						height: 4rem;
-						width: 4rem;
-						border-radius: 50%;
-						object-fit: cover;
-					}
-					.profileInfo {
-						display: flex;
-						flex-direction: column;
-						width: 80%;
-						justify-content: space-between;
-							.username {
-								font-size: 15px;
-							}
-							.status {
-								font-size: 12px;
-								color: #747474;
-						}
-					}
-				}
-				.signOut {
-					width: 100%;
-					display: flex;
-					gap: 20px;
-					align-items: center;
-					font-size: 14px;
-					padding: 10px;
-					border-top: 1px solid #afacac8a;
-					p,
-					> svg {
-						cursor: pointer;
-					}
-				}
-			}
-			/* Add an overlay for closing the MenuBar */
-.menuBarOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  z-index: 2; /* Above the menuBarContainer */
-  background-color: rgba(246,247,251, 0.3); /* Semi-transparent background */
-}
-
-/* Add a spacer to push content below MenuBar */
-// .menuBarSpacer {
-// 	width: 50%;
-//   height: 100%; /* Set to the height of your MenuBar */
-// }
-
-/* Add a backdrop for dimming the background */
-.menuBarBackdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  z-index: 1; /* Behind the menuBarContainer */
-}
 			.chatLogs {
 				width: 100%;
 				display: flex;
@@ -831,7 +753,7 @@ backdrop-filter: blur(5px);
 			border-radius: 0px 0px 5px 5px;
 			overflow: hidden;
 			z-index: 1;
-			position: relative;
+			// position: relative;
 			.profile {
 				height: 100%;
 				width: 100%;
@@ -979,6 +901,7 @@ backdrop-filter: blur(5px);
 				backdrop-filter: blur(5px);
 				-webkit-backdrop-filter: blur(5px);
 				z-index: 3;
+				position: relative;
 				div {
 					p {
 						display: inline-block;
@@ -1136,6 +1059,120 @@ backdrop-filter: blur(5px);
 		transform: translateY(0);
 	}
 }
+.menu-bar {
+	position: absolute;
+	border-top: 2px solid #cc44a1;
+	top: 40;
+	margin-top: 50px;
+	height: 100%;
+	width: 80%;
+	z-index: 4;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	background: rgba(255, 255, 255, 0.2);
+	box-shadow: 0 14px 20px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	.profileList {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		padding: 10px;
+		cursor: pointer;
+		&:hover {
+			background-color: #dce1ed;
+		}
+		img {
+			height: 4rem;
+			width: 4rem;
+			border-radius: 50%;
+			object-fit: cover;
+		}
+		.profileInfo {
+			display: flex;
+			flex-direction: column;
+			width: 80%;
+			justify-content: space-between;
+			.username {
+				font-size: 15px;
+			}
+			.status {
+				font-size: 12px;
+				color: #747474;
+			}
+		}
+	}
+	.menu-Info{
+		display: flex;
+		flex-direction: column;
+		.menu-item{
+			display: flex;
+			padding: 10px;
+			width: 100%;
+			align-items: center;
+			gap: 20px;
+			border-top: 1px solid #74747471;
+			cursor: pointer;
+			&:hover {
+				background-color: #dce1ed;
+			}
+			.label{
+				width: 25%;
+			}
+			.icon{
+				width: 85%;
+			}
+		}
+	}
+	.signOut {
+		width: 100%;
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		font-size: 14px;
+		padding: 10px;
+		border-top:  1px solid #74747471;
+		&:hover {
+			background-color: #dce1ed;
+		}
+		.label{
+			cursor: pointer;
+			width: 25%;
+		}
+		.icon {
+			cursor: pointer;
+			width: 85%;
+		}
+	}
+}
+.chat{
+	.menu-bar{
+		margin-top: 70px;
+	}
+}
+.menuBarOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	z-index: 3; 
+	background-color: rgba(
+		246,
+		247,
+		251,
+		0.3
+	); 
+}
+.menuBarBackdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	z-index: 1; 
+}
 
 /* Medium and Small Screens */
 
@@ -1245,5 +1282,11 @@ backdrop-filter: blur(5px);
 				// display: block;
 			}
 		}
+	}
+}
+
+@media (min-width: 901px){
+	.menu-bar{
+		margin-top: 70px;
 	}
 }
