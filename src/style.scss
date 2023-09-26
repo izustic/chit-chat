@@ -610,6 +610,7 @@ body {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				position: relative;
 
 				> svg {
 					cursor: pointer;
@@ -657,6 +658,90 @@ body {
 					}
 				}
 			}
+			.menu-bar {
+				position: absolute;
+				border-top: 2px solid #cc44a1;
+				top: 40;
+				margin-top: 50px;
+				height: 100%;
+				width: 80%;
+				z-index: 4;
+				right: 0;
+				display: flex;
+				flex-direction: column;
+				background: rgba(255, 255, 255, 0.2);
+box-shadow: 0 14px 20px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+				.profileList {
+					display: flex;
+					align-items: center;
+					gap: 15px;
+					padding: 10px;
+					cursor: pointer;
+					&:hover {
+						background-color: #dce1ed;
+					}
+					img {
+						height: 4rem;
+						width: 4rem;
+						border-radius: 50%;
+						object-fit: cover;
+					}
+					.profileInfo {
+						display: flex;
+						flex-direction: column;
+						width: 80%;
+						justify-content: space-between;
+							.username {
+								font-size: 15px;
+							}
+							.status {
+								font-size: 12px;
+								color: #747474;
+						}
+					}
+				}
+				.signOut {
+					width: 100%;
+					display: flex;
+					gap: 20px;
+					align-items: center;
+					font-size: 14px;
+					padding: 10px;
+					border-top: 1px solid #afacac8a;
+					p,
+					> svg {
+						cursor: pointer;
+					}
+				}
+			}
+			/* Add an overlay for closing the MenuBar */
+.menuBarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 2; /* Above the menuBarContainer */
+  background-color: rgba(246,247,251, 0.3); /* Semi-transparent background */
+}
+
+/* Add a spacer to push content below MenuBar */
+// .menuBarSpacer {
+// 	width: 50%;
+//   height: 100%; /* Set to the height of your MenuBar */
+// }
+
+/* Add a backdrop for dimming the background */
+.menuBarBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 1; /* Behind the menuBarContainer */
+}
 			.chatLogs {
 				width: 100%;
 				display: flex;
@@ -755,14 +840,28 @@ body {
 				align-items: center;
 				justify-content: space-between;
 				position: relative;
-				.profileTitle{
+				.profileTitle {
 					position: absolute;
+					display: flex;
+					width: 85%;
+					justify-content: space-between;
+					align-items: center;
 					color: #fff;
 					font-weight: 400;
 					margin-top: 2%;
 					left: 30px;
+					> svg {
+						font-size: 18px;
+						cursor: pointer;
+						transition: transform 0.3s ease;
+
+						&:hover {
+							animation: beat 1s infinite;
+							transform-origin: center;
+						}
+					}
 				}
-				.profileImg{
+				.profileImg {
 					position: absolute;
 					margin-top: 10%;
 					display: flex;
@@ -776,7 +875,7 @@ body {
 						object-fit: cover;
 						z-index: 1;
 					}
-					.camera{
+					.camera {
 						position: absolute;
 						right: 0;
 						bottom: 0;
@@ -789,9 +888,7 @@ body {
 						cursor: pointer;
 						border: 3px solid #f6f7fb;
 					}
-
 				}
-
 
 				.profileInfo {
 					width: 100%;
@@ -803,10 +900,10 @@ body {
 						flex-direction: column;
 						justify-content: space-between;
 						padding: 5% 0px;
-						.field-group{
+						.field-group {
 							display: flex;
 							flex-direction: column;
-							label{
+							label {
 								font-size: 10px;
 								color: #747474;
 							}
@@ -838,10 +935,10 @@ body {
 								outline: none;
 							}
 						}
-						p{
+						p {
 							font-size: 14px;
 						}
-						button.edit{
+						button.edit {
 							background: #6b2667;
 							border: none;
 							color: #fff;
@@ -851,13 +948,13 @@ body {
 							cursor: pointer;
 							&:focus {
 								outline: none;
-							}	
-							&:hover{
+							}
+							&:hover {
 								background: #6b2668eb;
 							}
 						}
 					}
-					.signOut{
+					.signOut {
 						height: 10%;
 						width: 100%;
 						display: flex;
@@ -865,7 +962,8 @@ body {
 						justify-content: center;
 						align-items: center;
 						font-size: 14px;
-						p, > svg {
+						p,
+						> svg {
 							cursor: pointer;
 						}
 					}

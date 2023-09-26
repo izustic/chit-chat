@@ -7,11 +7,11 @@ import Profile from "./Profile"
 import { profileData } from "./profileData";
 
 
-const Chat = ({ selectedChat, onChatClose }) => {
-  if (!selectedChat) {
+const Chat = ({ selectedChat, onChatClose, showProfileWindow, isSmallScreen }) => {
+  if (!selectedChat || showProfileWindow) {
     return (
       <div className="chat moveDown">
-        <Profile user={profileData[0]}/>
+        <Profile user={profileData[0]} setShowProfileWindow={showProfileWindow} isSmallScreen={isSmallScreen}/>
       </div>
     );
   }
