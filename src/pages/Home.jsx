@@ -4,6 +4,8 @@ import SideBar from "../components/SideBar";
 
 const Home = ({isSmallScreen}) => {
 	const [selectedChat, setSelectedChat] = useState(null);
+	const [showProfileWindow, setShowProfileWindow] = useState(false);
+
 
 	const handleChatSelect = (chat) => {
 		setSelectedChat(chat);
@@ -53,17 +55,26 @@ const Home = ({isSmallScreen}) => {
 					</>
 				) : (
 					<>
-						{!selectedChat && (
-							<SideBar
-								isSmallScreen={isSmallScreen}
-								selectedChat={selectedChat}
-								onChatSelect={handleChatSelect}
-							/>
-						)}
+         {!selectedChat && !showProfileWindow && ( 
+              <SideBar
+                isSmallScreen={isSmallScreen}
+                selectedChat={selectedChat}
+                onChatSelect={handleChatSelect}
+                showProfileWindow={() => setShowProfileWindow(true)}
+              />
+            )}
 						{selectedChat && (
 							<Chat
 								selectedChat={selectedChat}
 								onChatClose={() => setSelectedChat(null)}
+							/>
+						)}
+						{showProfileWindow && (
+							<Chat
+								selectedChat={selectedChat}
+								onChatClose={() => setSelectedChat(null)}
+								showProfileWindow={() => setShowProfileWindow(false)}
+								isSmallScreen={isSmallScreen}
 							/>
 						)}
 					</>

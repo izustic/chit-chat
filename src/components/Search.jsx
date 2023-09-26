@@ -10,15 +10,11 @@ const Search = ({ onSearch }) => {
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-
-    // Filter userChatData based on the username
     const filteredChats = userChatData.filter((chat) =>
       chat.username.toLowerCase().includes(query.toLowerCase())
     );
 
     setFilteredChats(filteredChats);
-
-    // Call the onSearch function to notify the parent component
     onSearch(query.trim().length > 0, filteredChats);
   };
 

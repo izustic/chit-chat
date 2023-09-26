@@ -63,14 +63,16 @@ const Register = () => {
 							photoURL: downloadURL,
 						});
 						console.log("User data added to Firestore successfully");
+						await setDoc(doc(db, "userChats", res.user.uid), {})
+						console.log("User chats created successfully");
+						navigate("/")
+						console.log("To the login page!");
 					} catch (error) {
 						console.error("Firebase or Firestore Error:", error);
 						setErr(true); 
 					}
 				}
 			);
-			
-
 		} catch (err) {
 			console.error("Registration Error:", err);
 			setErr(true);

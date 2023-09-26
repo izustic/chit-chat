@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import Home from "./pages/Home";
 import './style.scss'
+import { AuthContext } from "./context/AuthContext";
+
 function App() {
+  const { currentUser } = useContext(AuthContext)
+
+  console.log(currentUser)
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
     const handleResize = () => {
