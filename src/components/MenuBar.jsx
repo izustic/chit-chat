@@ -1,6 +1,6 @@
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import SignOut from "./SignOut";
 
 const MenuBar = ({ user, onSelect, menuItems, isSmallScreen }) => {
 	return (
@@ -17,30 +17,21 @@ const MenuBar = ({ user, onSelect, menuItems, isSmallScreen }) => {
 					<p className="status">{user.status}</p>
 				</div>
 			</div>
-      { !isSmallScreen && 
-      <div className="menu-Info">
-			{menuItems.map((item, index) => (
-				<div key={index} className="menu-item" onClick={item.action}>
-          <div className="label">
-					  <p>{item.label}</p>
-          </div>
-          <div className="icon">
-					  <FontAwesomeIcon icon={item.icon} />
-          </div>
+			{!isSmallScreen && (
+				<div className="menu-Info">
+					{menuItems.map((item, index) => (
+						<div key={index} className="menu-item" onClick={item.action}>
+							<div className="label">
+								<p>{item.label}</p>
+							</div>
+							<div className="icon">
+								<FontAwesomeIcon icon={item.icon} />
+							</div>
+						</div>
+					))}
 				</div>
-			))}
-      </div>
-      }
-			<div className="signOut">
-        <div className="label">
-				<p>Sign Out</p>
-
-        </div>
-        <div className="icon">
-				<FontAwesomeIcon icon={faRightFromBracket} />
-
-        </div>
-			</div>
+			)}
+			<SignOut />
 		</div>
 	);
 };

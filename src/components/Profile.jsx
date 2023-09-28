@@ -1,10 +1,10 @@
 import {
 	faCamera,
-	faRightFromBracket,
 	faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import SignOut from "./SignOut"
 
 const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 	const [isEditing, setIsEditing] = useState(false);
@@ -13,10 +13,6 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 		event.preventDefault();
 		setIsEditing(!isEditing);
 	};
-
-	console.log("user data:", user);
-	console.log("isEditing:", isEditing);
-
 	return (
 		<div className="profile">
 			<svg
@@ -28,8 +24,8 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 			>
 				<defs>
 					<linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0">
-						<stop stop-color="rgba(137, 76, 139, 1)" offset="0%"></stop>
-						<stop stop-color="rgba(232, 80, 159, 1)" offset="100%"></stop>
+						<stop stopColor="rgba(137, 76, 139, 1)" offset="0%"></stop>
+						<stop stopColor="rgba(232, 80, 159, 1)" offset="100%"></stop>
 					</linearGradient>
 				</defs>
 				<path
@@ -39,8 +35,8 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 				></path>
 				<defs>
 					<linearGradient id="sw-gradient-1" x1="0" x2="0" y1="1" y2="0">
-						<stop stop-color="rgba(137, 76, 139, 1)" offset="0%"></stop>
-						<stop stop-color="rgba(232, 80, 159, 1)" offset="100%"></stop>
+						<stop stopColor="rgba(137, 76, 139, 1)" offset="0%"></stop>
+						<stop stopColor="rgba(232, 80, 159, 1)" offset="100%"></stop>
 					</linearGradient>
 				</defs>
 				<path
@@ -110,10 +106,7 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 						</button>
 					)}
 				</form>
-				<div className="signOut">
-					<p>Sign Out</p>
-					<FontAwesomeIcon icon={faRightFromBracket} />
-				</div>
+				<SignOut />
 			</div>
 		</div>
 	);
