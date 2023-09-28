@@ -45,6 +45,7 @@ const SideBar = ({ isSmallScreen, selectedChat, onChatSelect, showProfileWindow 
 
 	return (
 		<div className={`side-bar moveUp ${!isSmallScreen ? "show" : ""}`}>
+			{console.log("RENDER SIDE BAR")}
 			<div className="sideHead">
 				<h2>Chats</h2>
 				<FontAwesomeIcon icon={faEllipsis} onClick={toggleMenuBar} />

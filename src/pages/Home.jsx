@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Chat from "../components/Chat";
 import SideBar from "../components/SideBar";
 
 const Home = ({isSmallScreen}) => {
 	const [selectedChat, setSelectedChat] = useState(null);
 	const [showProfileWindow, setShowProfileWindow] = useState(false);
+	const [shouldRender, setShouldRender] = useState(false);
 
+	useEffect(() => {
+    const delay = 1000;
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
 
 	const handleChatSelect = (chat) => {
 		setSelectedChat(chat);
 	};
 
+	if (!shouldRender) {
+    return null;
+  }
+
 	return (
 		<div className={`home ${isSmallScreen ? "small-screen" : ""}`}>
+			{console.log('RENDER HOME PAGE')}
 			<div
 				style={{
 					position: "absolute",

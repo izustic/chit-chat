@@ -1,18 +1,107 @@
-import {
-	faCamera,
-	faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import SignOut from "./SignOut"
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { AuthContext } from "../context/AuthContext";
+import { db, storage } from "../firebase";
+import SignOut from "./SignOut";
+import useUserData from "../userInfo"
+
 
 const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 	const [isEditing, setIsEditing] = useState(false);
+	const { currentUser } = useContext(AuthContext);
+	const userData = useUserData(); 
+	
+	const [status, setStatus] = useState("Available to Chat");
+	// const [displayName, setDisplayName] = useState(currentUser.displayName);
+	const [email, setEmail] = useState(currentUser.email);
+  const [displayName, setDisplayName] = useState(currentUser.displayName);
+	const storageRef = ref(storage, displayName);
+	const [selectedImage, setSelectedImage] = useState(null);
+
 
 	const toggleEdit = (event) => {
 		event.preventDefault();
 		setIsEditing(!isEditing);
 	};
+
+
+	useEffect(() => {
+		const fetchStatus = async () => {
+			try {
+				const userDocRef = doc(db, "users", currentUser.uid);
+				const userDocSnapshot = await getDoc(userDocRef);
+				if (userDocSnapshot.exists()) {
+					const userData = userDocSnapshot.data();
+					setStatus(userData.status || "Available to Chat");
+					setDisplayName(userData.displayName || currentUser.displayName);
+					console.log(
+						"USER'S INFO:",
+						currentUser.displayName,
+						currentUser.email,
+						status
+					);
+				}
+				console.log("FETCHED USER STATUS SUCCESSFULLY!");
+			} catch (error) {
+				console.error("Error fetching user's status:", error);
+			}
+		};
+
+		fetchStatus();
+	}, [currentUser, status]);
+
+	const handleSaveChanges = async (e) => {
+		e.preventDefault();
+		console.log("Saving changes...");
+		try {
+			const userDocRef = doc(db, "users", currentUser.uid);
+			if (selectedImage) {
+				const storageRef = ref(storage, currentUser.displayName);
+	
+				const uploadTask = uploadBytesResumable(storageRef, selectedImage);
+	
+				uploadTask.on(
+					"state_changed",
+					(snapshot) => {
+						const { bytesTransferred, totalBytes, state } = snapshot;
+						console.log(`Upload Progress: ${bytesTransferred} / ${totalBytes}, State: ${state}`);
+					},
+					(error) => {
+						console.error("Upload Error:", error);
+					},
+					async () => {
+						try {
+							const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+							await updateProfile(currentUser, {
+								photoURL: downloadURL, // Set the new photoURL
+							});
+							await setDoc(userDocRef, { displayName, status, email }, { merge: true });
+							setIsEditing(false);
+	
+							console.log("Changes saved successfully.", displayName);
+						} catch (error) {
+							console.error("Firebase or Firestore Error:", error);
+						}
+					}
+				);
+			} else {
+				// No new image selected, only update other profile information in Firestore
+				await setDoc(userDocRef, { displayName, status, email }, { merge: true });
+				setIsEditing(false);
+	
+				console.log("Changes saved successfully.", displayName);
+			}
+		} catch (error) {
+			console.error("Error updating user's data:", error);
+		}
+	};
+	
+	
+
 	return (
 		<div className="profile">
 			<svg
@@ -45,24 +134,30 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 					d="M0,147L40,155.2C80,163,160,180,240,220.5C320,261,400,327,480,294C560,261,640,131,720,130.7C800,131,880,261,960,294C1040,327,1120,261,1200,253.2C1280,245,1360,294,1440,302.2C1520,310,1600,278,1680,236.8C1760,196,1840,147,1920,122.5C2000,98,2080,98,2160,130.7C2240,163,2320,229,2400,285.8C2480,343,2560,392,2640,392C2720,392,2800,343,2880,318.5C2960,294,3040,294,3120,269.5C3200,245,3280,196,3360,204.2C3440,212,3520,278,3600,318.5C3680,359,3760,376,3840,359.3C3920,343,4000,294,4080,245C4160,196,4240,147,4320,138.8C4400,131,4480,163,4560,220.5C4640,278,4720,359,4800,343C4880,327,4960,212,5040,147C5120,82,5200,65,5280,122.5C5360,180,5440,310,5520,351.2C5600,392,5680,343,5720,318.5L5760,294L5760,490L5720,490C5680,490,5600,490,5520,490C5440,490,5360,490,5280,490C5200,490,5120,490,5040,490C4960,490,4880,490,4800,490C4720,490,4640,490,4560,490C4480,490,4400,490,4320,490C4240,490,4160,490,4080,490C4000,490,3920,490,3840,490C3760,490,3680,490,3600,490C3520,490,3440,490,3360,490C3280,490,3200,490,3120,490C3040,490,2960,490,2880,490C2800,490,2720,490,2640,490C2560,490,2480,490,2400,490C2320,490,2240,490,2160,490C2080,490,2000,490,1920,490C1840,490,1760,490,1680,490C1600,490,1520,490,1440,490C1360,490,1280,490,1200,490C1120,490,1040,490,960,490C880,490,800,490,720,490C640,490,560,490,480,490C400,490,320,490,240,490C160,490,80,490,40,490L0,490Z"
 				></path>
 			</svg>
+			{/* Profile Information */}
 			<div className="profileTitle">
 				<h2>Profile</h2>
-				{isSmallScreen && <FontAwesomeIcon
-					icon={faXmark}
-					onClick={() => {
-						setShowProfileWindow();
-					}}
-				/>}
-
+				{isSmallScreen && (
+					<FontAwesomeIcon
+						icon={faXmark}
+						onClick={() => {
+							setShowProfileWindow();
+						}}
+					/>
+				)}
 			</div>
 			<input
-				type="file"
-				id="image"
-				style={{ display: "none" }}
-				accept="image/*"
-			/>
+  type="file"
+  id="image"
+  style={{ display: "none" }}
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file);
+  }}
+/>
 			<div className="profileImg">
-				<img src={user.profileImage} alt="profile_image" />
+				<img src={currentUser.photoURL} alt="profile_image" />
 				<label htmlFor="image">
 					{isEditing && <FontAwesomeIcon icon={faCamera} className="camera" />}
 				</label>
@@ -72,32 +167,56 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 					<div className="field-group">
 						<label htmlFor="username">Username</label>
 						{isEditing ? (
-							<input type="text" id="username" defaultValue={user.username} />
+							<input
+								type="text"
+								id="username"
+								defaultValue={displayName}
+								onChange={(e) => {
+									console.log("Username input value:", e.target.value);
+									setDisplayName(e.target.value);
+									console.log("New Name", displayName)
+								}}
+							/>
 						) : (
-							<p>{user.username}</p>
+							<p>{displayName}</p>
 						)}
 					</div>
 
 					<div className="field-group">
 						<label htmlFor="status">Status</label>
 						{isEditing ? (
-							<input type="text" id="status" defaultValue={user.status} />
+							<input
+								type="text"
+								id="status"
+								defaultValue={status || "Online"}
+								onChange={(e) => setStatus(e.target.value)}
+							/>
 						) : (
-							<p>{user.status}</p>
+							<p>{status?.toString() || "Loading status..."}</p>
 						)}
 					</div>
 
 					<div className="field-group">
 						<label htmlFor="email">Email</label>
 						{isEditing ? (
-							<input type="email" id="email" defaultValue={user.email} />
+							<input
+								type="email"
+								id="email"
+								defaultValue={currentUser.email}
+								onChange={(e) => setEmail(e.target.value)}
+								disabled={true}
+							/>
 						) : (
-							<p>{user.email}</p>
+							<p>{currentUser.email}</p>
 						)}
 					</div>
 
 					{isEditing ? (
-						<button className="profileBtn save" type="submit">
+						<button
+							className="profileBtn save"
+							type="submit"
+							onClick={handleSaveChanges}
+						>
 							Save changes
 						</button>
 					) : (

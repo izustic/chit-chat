@@ -25,16 +25,13 @@ const Login = ({ isSmallScreen }) => {
 
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login successful:", res);
       const userDocRef = doc(db, "users", res.user.uid);
       const userDocSnapshot = await getDoc(userDocRef);
 
       if (userDocSnapshot.exists()) {
-        console.log("User document exists in Firestore");
         navigate("/home");
       } else {
         setErr(true);
-        console.log("User document doesn't exist in Firestore");
       }
     } catch (err) {
       setErr(true);
@@ -42,21 +39,18 @@ const Login = ({ isSmallScreen }) => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = async (e) => {
     try {
-      console.log("Starting Google Sign-In");
       const currentUser = auth.currentUser;
       if (currentUser) {
-        console.log("User is already signed in");
+        e.preventDefault();
         navigate("/home");
         return;
       }
 
       if (isSmallScreen) {
-        console.log("Redirecting to Google Sign-In");
         await signInWithRedirect(auth, provider);
       } else {
-        console.log("Opening Google Sign-In popup");
         await signInWithPopup(auth, provider);
       }
     } catch (error) {
@@ -67,7 +61,6 @@ const Login = ({ isSmallScreen }) => {
   const handleFirebaseAuthChange = useCallback(async (user) => {
     try {
       if (user) {
-        console.log("User is now signed in");
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
 
@@ -81,8 +74,8 @@ const Login = ({ isSmallScreen }) => {
             displayName,
             email,
             photoURL,
+            status: "Available to Chat", 
           });
-          console.log("User data added to Firestore successfully");
 
           await setDoc(doc(db, "userChats", user.uid), {});
         }
@@ -104,10 +97,8 @@ const Login = ({ isSmallScreen }) => {
   useEffect(() => {
     const handleRedirectSignIn = async () => {
       try {
-        console.log("Checking for redirect sign-in");
         const result = await getRedirectResult(auth);
         if (result && result.user) {
-          console.log("Redirect sign-in successful");
           navigate("/home");
           await handleFirebaseAuthChange(result.user);
         }
@@ -119,7 +110,6 @@ const Login = ({ isSmallScreen }) => {
     if (isSmallScreen) {
       handleRedirectSignIn();
     } else {
-      console.log("Listening for Firebase Auth state changes");
       const unsubscribe = onAuthStateChanged(auth, handleFirebaseAuthChange);
       return () => unsubscribe(); 
     }
@@ -128,6 +118,7 @@ const Login = ({ isSmallScreen }) => {
 
   return (
     <>
+			{console.log('RENDER LOGIN PAGE')}
       <div className="formContainer">
         <div className="loginLeftWrap">
           <div className="logoSmallTxt">

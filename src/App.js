@@ -12,7 +12,7 @@ function App() {
 		if (!currentUser) {
 			return <Navigate to="/" />;
 		}
-    return children;
+		return children;
 	};
 
 	const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -28,6 +28,7 @@ function App() {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
+	console.log("RENDER APP JS");
 	return (
 		<BrowserRouter>
 			<Routes>
