@@ -7,33 +7,43 @@ import {
 	faUserSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Input from "./Input";
 import MenuBar from "./MenuBar";
 import Messages from "./Messages";
 import Profile from "./Profile";
 import { profileData } from "./profileData";
+import { AuthContext } from "../context/AuthContext";
+import  useUserData from "../userInfo";
 
 const chatMenuItems = [
 	{
 		label: "About User",
 		icon: faUser,
-		action: "",
+		action: () => {
+      console.log("About User action");
+    },
 	},
 	{
 		label: "Pin User",
 		icon: faThumbtack,
-		action: "",
+		action: () => {
+      console.log("Pin User action");
+    },
 	},
 	{
 		label: "Mute User",
 		icon: faBellSlash,
-		action: "",
+		action: () => {
+      console.log("Mute User action");
+    },
 	},
 	{
 		label: "Block User",
 		icon: faUserSlash,
-		action: "",
+		action: () => {
+      console.log("Block User action");
+    },
 	},
 ];
 
@@ -44,14 +54,16 @@ const Chat = ({
 	isSmallScreen,
 }) => {
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
+	const { currentUser } = useContext(AuthContext);
+  const userData = useUserData();
 
-	// Function to toggle the visibility of MenuBar
 	const toggleMenuBar = () => {
 		setIsMenuBarVisible(!isMenuBarVisible);
 	};
 	if (!selectedChat || showProfileWindow) {
 		return (
 			<div className="chat moveDown">
+							{console.log('RENDER PROFILE PAGE')}
 				<Profile
 					user={profileData[0]}
 					setShowProfileWindow={showProfileWindow}
@@ -63,9 +75,10 @@ const Chat = ({
 
 	return (
 		<div className="chat moveDown">
+			{console.log("RENDER SELECTED CHAT PAGE!")}
 			<div className="chatHead">
 				<FontAwesomeIcon icon={faAngleLeft} onClick={onChatClose} />
-				<h3>{selectedChat.username}</h3>
+				<h3>{userData?.displayName}</h3>
 				<FontAwesomeIcon icon={faEllipsis} onClick={toggleMenuBar} />
 			</div>
 			{isMenuBarVisible && (

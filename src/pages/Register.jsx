@@ -29,9 +29,7 @@ const Register = () => {
 		}
 
 		try {
-			console.log("Before createUserWithEmailAndPassword");
 			const res = await createUserWithEmailAndPassword(auth, email, password);
-			console.log("After createUserWithEmailAndPassword", res);
 			const storageRef = ref(storage, displayName);
 
 			const uploadTask = uploadBytesResumable(storageRef, file);
@@ -47,26 +45,21 @@ const Register = () => {
 					setErr(true); 
 				},
 				async () => {
-					console.log("Upload completed successfully");
 					try {
 						const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-						console.log("Download URL:", downloadURL);
 						await updateProfile(res.user, {
 							displayName,
 							photoURL: downloadURL,
 						});
-						console.log("Profile updated successfully");
 						await setDoc(doc(db, "users", res.user.uid), {
 							uid: res.user.uid,
 							displayName,
 							email,
 							photoURL: downloadURL,
+							status: "Available to Chat", 
 						});
-						console.log("User data added to Firestore successfully");
 						await setDoc(doc(db, "userChats", res.user.uid), {})
-						console.log("User chats created successfully");
 						navigate("/")
-						console.log("To the login page!");
 					} catch (error) {
 						console.error("Firebase or Firestore Error:", error);
 						setErr(true); 
@@ -77,10 +70,10 @@ const Register = () => {
 			console.error("Registration Error:", err);
 			setErr(true);
 		}
-		console.log("After catch block");
 	};
 	return (
 		<>
+			{console.log('RENDER REGISTER PAGE')}
 			<div className="formContainer">
 				<div className="registerLeftWrap">
 					<div className="logoWrap">

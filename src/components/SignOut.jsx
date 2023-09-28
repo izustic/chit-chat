@@ -7,11 +7,11 @@ import { auth } from "../firebase"
 const SignOut = () => {
 	return (
 		<div className="signOut" onClick={() => signOut(auth)}>
-			<div className="label">
-				<p>Sign Out</p>
-			</div>
 			<div className="icon">
 				<FontAwesomeIcon icon={faRightFromBracket} />
+			</div>
+			<div className="label">
+				<p>Sign Out</p>
 			</div>
 		</div>
 	);
