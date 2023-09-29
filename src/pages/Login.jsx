@@ -8,7 +8,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/chit-chat-pink.png";
@@ -26,6 +26,11 @@ const Login = ({ isSmallScreen }) => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       const userDocRef = doc(db, "users", res.user.uid);
+
+      await setDoc(userDocRef, {
+        lastSeen: serverTimestamp(),
+      }, { merge: true });
+
       const userDocSnapshot = await getDoc(userDocRef);
 
       if (userDocSnapshot.exists()) {
@@ -74,10 +79,15 @@ const Login = ({ isSmallScreen }) => {
             displayName,
             email,
             photoURL,
-            status: "Available to Chat", 
+            status: "Available to Chat",
+            lastSeen: serverTimestamp(), 
           });
 
           await setDoc(doc(db, "userChats", user.uid), {});
+        } else {
+          await setDoc(userDocRef, {
+            lastSeen: serverTimestamp(),
+          }, { merge: true });
         }
         navigate("/home");
       }
