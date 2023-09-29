@@ -1,10 +1,12 @@
 import {
 	faCircleExclamation,
 	faUpload,
+	faHourglassStart,
+	faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +15,8 @@ import { auth, db, storage } from "../firebase";
 
 const Register = () => {
 	const [err, setErr] = useState(false);
+	const [uploading, setUploading] = useState(false); 
+	const [uploadSuccess, setUploadSuccess] = useState(false);
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
@@ -38,11 +42,19 @@ const Register = () => {
 				"state_changed",
 				(snapshot) => {
 					const { bytesTransferred, totalBytes, state } = snapshot;
-					console.log(`Upload Progress: ${bytesTransferred} / ${totalBytes}, State: ${state}`);
+					console.log(
+						`Upload Progress: ${bytesTransferred} / ${totalBytes}, State: ${state}`
+					);
+					if (state === "running") {
+						setUploading(true);
+					} else if (state === "success") {
+						setUploading(false);
+						setUploadSuccess(true);
+					}
 				},
 				(error) => {
 					console.error("Upload Error:", error);
-					setErr(true); 
+					setErr(true);
 				},
 				async () => {
 					try {
@@ -56,13 +68,14 @@ const Register = () => {
 							displayName,
 							email,
 							photoURL: downloadURL,
-							status: "Available to Chat", 
+							status: "Available to Chat",
+							lastSeen: serverTimestamp(),
 						});
-						await setDoc(doc(db, "userChats", res.user.uid), {})
-						navigate("/")
+						await setDoc(doc(db, "userChats", res.user.uid), {});
+						navigate("/");
 					} catch (error) {
 						console.error("Firebase or Firestore Error:", error);
-						setErr(true); 
+						setErr(true);
 					}
 				}
 			);
@@ -73,7 +86,7 @@ const Register = () => {
 	};
 	return (
 		<>
-			{console.log('RENDER REGISTER PAGE')}
+			{console.log("RENDER REGISTER PAGE")}
 			<div className="formContainer">
 				<div className="registerLeftWrap">
 					<div className="logoWrap">
@@ -107,6 +120,60 @@ const Register = () => {
 								<span>Add an avatar</span>
 							</label>
 							<button>Sign up</button>
+							{uploading && (
+								<span
+									style={{
+										width: "100%",
+										background: "transparent",
+										display: "flex",
+										justifyContent: "center",
+										alignItems: "center",
+									}}
+								>
+									<div
+										style={{
+											display: "flex",
+											width: "70%",
+											background: "#f5f5f5",
+											color: "#000",
+											gap: "10px",
+											padding: "10px",
+											justifyContent: "center",
+											alignItems: "center",
+											borderRadius: "10px",
+										}}
+									>
+										<FontAwesomeIcon icon={faHourglassStart} />
+										<p>Uploading image ...</p>
+									</div>
+								</span>
+							)}
+							{uploadSuccess && 	<span
+									style={{
+										width: "100%",
+										background: "transparent",
+										display: "flex",
+										justifyContent: "center",
+										alignItems: "center",
+									}}
+								>
+									<div
+										style={{
+											display: "flex",
+											width: "70%",
+											background: "#BAEDA9",
+											color: "#000",
+											gap: "10px",
+											padding: "10px",
+											justifyContent: "center",
+											alignItems: "center",
+											borderRadius: "10px",
+										}}
+									>
+										<FontAwesomeIcon icon={faCircleCheck} />
+										<p>Image Uploaded Successfully!</p>
+									</div>
+								</span>}
 							{err && (
 								<span
 									style={{
@@ -127,7 +194,7 @@ const Register = () => {
 											padding: "10px",
 											justifyContent: "center",
 											alignItems: "center",
-											borderRadius: "10px"
+											borderRadius: "10px",
 										}}
 									>
 										<FontAwesomeIcon icon={faCircleExclamation} />

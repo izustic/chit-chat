@@ -2,24 +2,22 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import ChatLog from "./ChatLog";
-import MenuBar from "./MenuBar"; // Import the MenuBar component
+import MenuBar from "./MenuBar";
 import Search from "./Search";
 import { profileData } from "./profileData";
 import { userChatData } from "./userChatsData";
 
-const SideBar = ({ isSmallScreen, selectedChat, onChatSelect, showProfileWindow }) => {
+const SideBar = ({
+	isSmallScreen,
+	selectedChat,
+	onChatSelect,
+	showProfileWindow,
+}) => {
 	const [isSearching, setIsSearching] = useState(false);
 	const [filteredChats, setFilteredChats] = useState([]);
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
 
-
-	const profileMenuItems = [
-		{
-		},
-	];
-	
-
-
+	const profileMenuItems = [{}];
 
 	const handleSearch = (searching, chats) => {
 		setIsSearching(searching);
@@ -50,7 +48,14 @@ const SideBar = ({ isSmallScreen, selectedChat, onChatSelect, showProfileWindow 
 				<h2>Chats</h2>
 				<FontAwesomeIcon icon={faEllipsis} onClick={toggleMenuBar} />
 			</div>
-			{isMenuBarVisible && <MenuBar user={profileData[0]} onSelect={showProfileWindow} menuItems={profileMenuItems} isSmallScreen={isSmallScreen}/>}
+			{isMenuBarVisible && (
+				<MenuBar
+					user={profileData[0]}
+					onSelect={showProfileWindow}
+					menuItems={profileMenuItems}
+					isSmallScreen={isSmallScreen}
+				/>
+			)}
 			{isMenuBarVisible && (
 				<div className="menuBarOverlay" onClick={toggleMenuBar} />
 			)}

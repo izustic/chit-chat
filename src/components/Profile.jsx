@@ -1,33 +1,26 @@
 import { faCamera, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
-import React, { useContext, useEffect, useState } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { db, storage } from "../firebase";
 import SignOut from "./SignOut";
-import useUserData from "../userInfo"
-
 
 const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const { currentUser } = useContext(AuthContext);
-	const userData = useUserData(); 
-	
-	const [status, setStatus] = useState("Available to Chat");
-	// const [displayName, setDisplayName] = useState(currentUser.displayName);
-	const [email, setEmail] = useState(currentUser.email);
-  const [displayName, setDisplayName] = useState(currentUser.displayName);
-	const storageRef = ref(storage, displayName);
-	const [selectedImage, setSelectedImage] = useState(null);
 
+	const [status, setStatus] = useState("Available to Chat");
+	const [email, setEmail] = useState(currentUser.email);
+	const [displayName, setDisplayName] = useState(currentUser.displayName);
+	const [selectedImage, setSelectedImage] = useState(null);
 
 	const toggleEdit = (event) => {
 		event.preventDefault();
 		setIsEditing(!isEditing);
 	};
-
 
 	useEffect(() => {
 		const fetchStatus = async () => {
@@ -52,7 +45,8 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 		};
 
 		fetchStatus();
-	}, [currentUser, status]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentUser]);
 
 	const handleSaveChanges = async (e) => {
 		e.preventDefault();
@@ -61,14 +55,16 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 			const userDocRef = doc(db, "users", currentUser.uid);
 			if (selectedImage) {
 				const storageRef = ref(storage, currentUser.displayName);
-	
+
 				const uploadTask = uploadBytesResumable(storageRef, selectedImage);
-	
+
 				uploadTask.on(
 					"state_changed",
 					(snapshot) => {
 						const { bytesTransferred, totalBytes, state } = snapshot;
-						console.log(`Upload Progress: ${bytesTransferred} / ${totalBytes}, State: ${state}`);
+						console.log(
+							`Upload Progress: ${bytesTransferred} / ${totalBytes}, State: ${state}`
+						);
 					},
 					(error) => {
 						console.error("Upload Error:", error);
@@ -77,30 +73,40 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 						try {
 							const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 							await updateProfile(currentUser, {
-								photoURL: downloadURL, // Set the new photoURL
+								photoURL: downloadURL,
 							});
-							await setDoc(userDocRef, { displayName, status, email }, { merge: true });
+							await setDoc(
+								userDocRef,
+								{ displayName, status, email },
+								{ merge: true }
+							);
 							setIsEditing(false);
-	
-							console.log("Changes saved successfully.", displayName);
+
+							console.log(
+								"Changes saved successfully.",
+								displayName,
+								status,
+								email
+							);
 						} catch (error) {
 							console.error("Firebase or Firestore Error:", error);
 						}
 					}
 				);
 			} else {
-				// No new image selected, only update other profile information in Firestore
-				await setDoc(userDocRef, { displayName, status, email }, { merge: true });
+				await setDoc(
+					userDocRef,
+					{ displayName, status, email },
+					{ merge: true }
+				);
 				setIsEditing(false);
-	
-				console.log("Changes saved successfully.", displayName);
+
+				console.log("Changes saved successfully.", displayName, status, email);
 			}
 		} catch (error) {
 			console.error("Error updating user's data:", error);
 		}
 	};
-	
-	
 
 	return (
 		<div className="profile">
@@ -147,15 +153,15 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 				)}
 			</div>
 			<input
-  type="file"
-  id="image"
-  style={{ display: "none" }}
-  accept="image/*"
-  onChange={(e) => {
-    const file = e.target.files[0];
-    setSelectedImage(file);
-  }}
-/>
+				type="file"
+				id="image"
+				style={{ display: "none" }}
+				accept="image/*"
+				onChange={(e) => {
+					const file = e.target.files[0];
+					setSelectedImage(file);
+				}}
+			/>
 			<div className="profileImg">
 				<img src={currentUser.photoURL} alt="profile_image" />
 				<label htmlFor="image">
@@ -174,7 +180,7 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 								onChange={(e) => {
 									console.log("Username input value:", e.target.value);
 									setDisplayName(e.target.value);
-									console.log("New Name", displayName)
+									console.log("New Name", displayName);
 								}}
 							/>
 						) : (
@@ -189,7 +195,10 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 								type="text"
 								id="status"
 								defaultValue={status || "Online"}
-								onChange={(e) => setStatus(e.target.value)}
+								onChange={(e) => {
+									setStatus(e.target.value);
+									console.log(status);
+								}}
 							/>
 						) : (
 							<p>{status?.toString() || "Loading status..."}</p>

@@ -54,7 +54,7 @@ const Chat = ({
 	isSmallScreen,
 }) => {
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
-	const { currentUser } = useContext(AuthContext);
+	useContext(AuthContext);
   const userData = useUserData();
 
 	const toggleMenuBar = () => {
