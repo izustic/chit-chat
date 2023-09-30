@@ -86,7 +86,7 @@ const Register = () => {
 	};
 	return (
 		<>
-			{console.log("RENDER REGISTER PAGE")}
+			{/* {console.log("RENDER REGISTER PAGE")} */}
 			<div className="formContainer">
 				<div className="registerLeftWrap">
 					<div className="logoWrap">

@@ -128,7 +128,7 @@ const Login = ({ isSmallScreen }) => {
 
   return (
     <>
-			{console.log('RENDER LOGIN PAGE')}
+			{/* {console.log('RENDER LOGIN PAGE')} */}
       <div className="formContainer">
         <div className="loginLeftWrap">
           <div className="logoSmallTxt">

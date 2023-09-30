@@ -1,13 +1,18 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import React, { useState, useContext } from "react";
+import { collection, query, where, setDoc, getDocs, updateDoc, serverTimestamp, getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
+import { AuthContext } from "../context/AuthContext";
 
 const Search = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+
+  const [user, setUser] = useState(null)
+  const [err, setErr] = useState(false)
 
   const handleSearchChange = async (e) => {
     const queryText = e.target.value;
@@ -21,27 +26,72 @@ const Search = ({ onSearch }) => {
     } else {
       try {
         const usersCollection = collection(db, "users");
-        const q = query(usersCollection, where("displayName", "==", queryText));
+        const q = query(usersCollection, where("displayName", ">=", queryText));
         const querySnapshot = await getDocs(q);
-        console.log("Query Snapshot", querySnapshot)
         if (querySnapshot.empty) {
-          console.log("No matching documents found.");
         } else {
           const matchingUsers = querySnapshot.docs.map((doc) => doc.data());
-          console.log("Matching Users:", matchingUsers);
           setFilteredUsers(matchingUsers);
           onSearch(true, matchingUsers);
         }
       } catch (error) {
-        console.error("Error searching Firestore:", error);
+        console.error("Error searching Firestore:", error.message);
       } finally {
         setIsLoading(false); 
       }
     }
   };
 
-    // Add debug log
-    console.log("Render Search Component:", searchQuery, isLoading, filteredUsers);
+
+
+
+  const handleSelect = async (user) => {
+    const combinedId =
+      currentUser.uid > user.uid
+        ? currentUser.uid + user.uid
+        : user.uid + currentUser.uid;
+  
+    try {
+      const chatDocRef = doc(db, "chats", combinedId);
+      const chatDocSnapshot = await getDoc(chatDocRef);
+  
+      if (!chatDocSnapshot.exists()) {
+        // Create a chat room in Firebase and add both members to it
+        await setDoc(chatDocRef, { messages: [] });
+  
+        // Update user chats for currentUser
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId]: {
+            date: serverTimestamp(),
+            userInfo: {
+              uid: user.uid,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+            },
+          },
+        });
+  
+        // Update user chats for the other user
+        await updateDoc(doc(db, "userChats", user.uid), {
+          [combinedId]: {
+            date: serverTimestamp(),
+            userInfo: {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+            },
+          },
+        });
+      }
+      // setSelectedUser(user);
+      console.log('Chat selected successfully');
+    } catch (error) {
+      console.error("Error handling chat selection:", error);
+    }
+    setSearchQuery("");
+    // isSearching = false
+  };
+
 
   return (
     <div className="search">
@@ -54,21 +104,15 @@ const Search = ({ onSearch }) => {
         />
         <FontAwesomeIcon icon={faSearch} className="search-icon" />
       </div>
-      <div className="chatLogs">
+
+      <div className="chatLogs search-block">
+        {err && <span>User not found!</span>}
         {searchQuery && isLoading ? (
           <div>Searching...</div>
         ) : searchQuery && filteredUsers.length > 0 ? (
           filteredUsers.map((user, index) => (
-            <div className="userChat" key={index}>
+            <div className="userChat" key={index} onClick={()=> handleSelect(user)}>
               <img src={user.photoURL} alt="user" />
-{/* //               <div className="userChatInfo">
-//                 <div className="userInfo">
-//                   <p className="username">{chat.username}</p>
-//                 </div>
-//                 <div className="rightInfo">
-//                   <p className="lastSeen">{chat.lastSeen}</p>
-//                 </div>
-//               </div> */}
               <div className="userChatInfo">
                 <div className="userInfo">
                   <p className="username">{user.displayName}</p>

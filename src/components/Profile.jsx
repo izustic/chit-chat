@@ -31,14 +31,14 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 					const userData = userDocSnapshot.data();
 					setStatus(userData.status || "Available to Chat");
 					setDisplayName(userData.displayName || currentUser.displayName);
-					console.log(
-						"USER'S INFO:",
-						currentUser.displayName,
-						currentUser.email,
-						status
-					);
+					// console.log(
+					// 	"USER'S INFO:",
+					// 	currentUser.displayName,
+					// 	currentUser.email,
+					// 	status
+					// );
 				}
-				console.log("FETCHED USER STATUS SUCCESSFULLY!");
+				// console.log("FETCHED USER STATUS SUCCESSFULLY!");
 			} catch (error) {
 				console.error("Error fetching user's status:", error);
 			}
@@ -50,7 +50,7 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 
 	const handleSaveChanges = async (e) => {
 		e.preventDefault();
-		console.log("Saving changes...");
+		// console.log("Saving changes...");
 		try {
 			const userDocRef = doc(db, "users", currentUser.uid);
 			if (selectedImage) {
@@ -82,12 +82,12 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 							);
 							setIsEditing(false);
 
-							console.log(
-								"Changes saved successfully.",
-								displayName,
-								status,
-								email
-							);
+							// console.log(
+							// 	"Changes saved successfully.",
+							// 	displayName,
+							// 	status,
+							// 	email
+							// );
 						} catch (error) {
 							console.error("Firebase or Firestore Error:", error);
 						}
@@ -101,7 +101,7 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 				);
 				setIsEditing(false);
 
-				console.log("Changes saved successfully.", displayName, status, email);
+				// console.log("Changes saved successfully.", displayName, status, email);
 			}
 		} catch (error) {
 			console.error("Error updating user's data:", error);
@@ -178,9 +178,7 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 								id="username"
 								defaultValue={displayName}
 								onChange={(e) => {
-									console.log("Username input value:", e.target.value);
 									setDisplayName(e.target.value);
-									console.log("New Name", displayName);
 								}}
 							/>
 						) : (
@@ -197,7 +195,6 @@ const Profile = ({ user, setShowProfileWindow, isSmallScreen }) => {
 								defaultValue={status || "Online"}
 								onChange={(e) => {
 									setStatus(e.target.value);
-									console.log(status);
 								}}
 							/>
 						) : (

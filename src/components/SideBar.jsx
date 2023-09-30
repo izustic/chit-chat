@@ -16,6 +16,7 @@ const SideBar = ({
 	const [isSearching, setIsSearching] = useState(false);
 	const [filteredChats, setFilteredChats] = useState([]);
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
+	// const [selectedUser, setSelectedUser] = useState(null);
 
 	const profileMenuItems = [{}];
 
@@ -43,7 +44,7 @@ const SideBar = ({
 
 	return (
 		<div className={`side-bar moveUp ${!isSmallScreen ? "show" : ""}`}>
-			{console.log("RENDER SIDE BAR")}
+			{/* {console.log("RENDER SIDE BAR")} */}
 			<div className="sideHead">
 				<h2>Chats</h2>
 				<FontAwesomeIcon icon={faEllipsis} onClick={toggleMenuBar} />
@@ -56,13 +57,11 @@ const SideBar = ({
 					isSmallScreen={isSmallScreen}
 				/>
 			)}
-			{isMenuBarVisible && (
-				<div className="menuBarOverlay" onClick={toggleMenuBar} />
-			)}
+			{isMenuBarVisible && <div className="menuBarOverlay" onClick={toggleMenuBar} />}
 			{isMenuBarVisible && <div className="menuBarSpacer" />}
 			{isMenuBarVisible && <div className="menuBarBackdrop" />}
-			<Search onSearch={handleSearch} />
 
+			<Search onSearch={handleSearch}/>
 			{!isSearching && !selectedChat && (
 				<ChatLog userChats={userChatData} onSelect={onChatSelect} />
 			)}
