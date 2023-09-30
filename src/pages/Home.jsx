@@ -26,7 +26,7 @@ const Home = ({isSmallScreen}) => {
 
 	return (
 		<div className={`home ${isSmallScreen ? "small-screen" : ""}`}>
-			{console.log('RENDER HOME PAGE')}
+			{/* {console.log('RENDER HOME PAGE')} */}
 			<div
 				style={{
 					position: "absolute",

@@ -63,7 +63,7 @@ const Chat = ({
 	if (!selectedChat || showProfileWindow) {
 		return (
 			<div className="chat moveDown">
-							{console.log('RENDER PROFILE PAGE')}
+							{/* {console.log('RENDER PROFILE PAGE')} */}
 				<Profile
 					user={profileData[0]}
 					setShowProfileWindow={showProfileWindow}
@@ -75,7 +75,7 @@ const Chat = ({
 
 	return (
 		<div className="chat moveDown">
-			{console.log("RENDER SELECTED CHAT PAGE!")}
+			{/* {console.log("RENDER SELECTED CHAT PAGE!")} */}
 			<div className="chatHead">
 				<FontAwesomeIcon icon={faAngleLeft} onClick={onChatClose} />
 				<h3>{userData?.displayName}</h3>
