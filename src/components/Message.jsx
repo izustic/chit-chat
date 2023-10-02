@@ -1,38 +1,38 @@
-import React from "react";
+import React, {useContext, useRef, useEffect} from "react";
+import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
+import { formatMessageTime } from "./MessageTimeFormat";
 
-const Message = () => {
+const Message = ({message}) => {
+	const {currentUser} = useContext(AuthContext)
+	const {data} = useContext(ChatContext)
+	const ref = useRef()
+
+	useEffect(()=> {
+		ref.current?.scrollIntoView({ behavior:"smooth" });
+	}, [message])
+	
+	if (!message) {
+    return null;
+  }
+
 	return (
 		<>
-		<div className="chats owner">
+		<div className={`chats ${message.senderId === currentUser.uid && "owner"}`} ref={ref}>
 			<div className="messageAvatar">
 				<img
-					src="https://source.unsplash.com/random/300×300/?profile"
+					src={message.senderId === currentUser.uid ? currentUser.photoURL : data.user.photoURL}
 					alt=""
 				/>
 			</div>
 			<div className="messageInfo">
         <div className="messageContent">
-          <p className="chatMessage">Hi. How are you doing</p>
-          <p className="chatMessage">Have you heard of this incredible animal. I saw it at the safari!</p>
-					<img src="https://source.unsplash.com/random/300×300/?animals" alt="" className="chatMedia"/>
+          <p className="chatMessage">{message.text}</p>
+					{message.img && <img src={message.img} alt="" className="chatMedia"/>}
         </div>
-        <p className="lastSeen">10 mins ago</p>
-      </div>
-		</div>
-		<div className="chats">
-			<div className="messageAvatar">
-				<img
-					src="https://source.unsplash.com/random/300×300/?profile"
-					alt=""
-				/>
-			</div>
-			<div className="messageInfo">
-        <div className="messageContent">
-          <p className="chatMessage">Wow!</p>
-          <p className="chatMessage">I wouldn't see such animal where I am in the city.</p>
-					<img src="https://source.unsplash.com/random/300×300/?cities" alt="" className="chatMedia"/>
-        </div>
-        <p className="lastSeen">10 mins ago</p>
+        <p className="lastSeen">
+					{formatMessageTime(message.date)}
+					</p>
       </div>
 		</div>
 		</>

@@ -1,36 +1,35 @@
-import React, { useState , useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import Chat from "../components/Chat";
 import SideBar from "../components/SideBar";
 
-const Home = ({isSmallScreen}) => {
+const Home = ({ isSmallScreen }) => {
 	const [selectedChat, setSelectedChat] = useState(null);
 	const [showProfileWindow, setShowProfileWindow] = useState(false);
 	const [shouldRender, setShouldRender] = useState(false);
 
 	useEffect(() => {
-    const delay = 1000;
-    const timer = setTimeout(() => {
-      setShouldRender(true);
-    }, delay);
+		const delay = 1000;
+		const timer = setTimeout(() => {
+			setShouldRender(true);
+		}, delay);
 
-    return () => clearTimeout(timer);
-  }, []);
+		return () => clearTimeout(timer);
+	}, []);
 
 	const handleChatSelect = (chat) => {
 		setSelectedChat(chat);
 	};
 
 	if (!shouldRender) {
-    return null;
-  }
+		return null;
+	}
 
 	return (
 		<div className={`home ${isSmallScreen ? "small-screen" : ""}`}>
-			{/* {console.log('RENDER HOME PAGE')} */}
 			<div
 				style={{
 					position: "absolute",
-					top: 0, 
+					top: 0,
 					left: 0,
 					width: "100vw",
 					display: "inline",
@@ -69,14 +68,14 @@ const Home = ({isSmallScreen}) => {
 					</>
 				) : (
 					<>
-         {!selectedChat && !showProfileWindow && ( 
-              <SideBar
-                isSmallScreen={isSmallScreen}
-                selectedChat={selectedChat}
-                onChatSelect={handleChatSelect}
-                showProfileWindow={() => setShowProfileWindow(true)}
-              />
-            )}
+						{!selectedChat && !showProfileWindow && (
+							<SideBar
+								isSmallScreen={isSmallScreen}
+								selectedChat={selectedChat}
+								onChatSelect={handleChatSelect}
+								showProfileWindow={() => setShowProfileWindow(true)}
+							/>
+						)}
 						{selectedChat && (
 							<Chat
 								selectedChat={selectedChat}
@@ -100,7 +99,7 @@ const Home = ({isSmallScreen}) => {
 					position: "absolute",
 					bottom: -10,
 					left: 0,
-					width: "100vw", 
+					width: "100vw",
 					display: "inline",
 					overflow: "hidden",
 				}}

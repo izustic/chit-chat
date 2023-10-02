@@ -509,7 +509,6 @@ body {
 		}
 		p {
 			font-size: 14px;
-			// margin: 10px;
 			cursor: pointer;
 			&:hover {
 				color: #f5bcf1;
@@ -670,7 +669,6 @@ body {
 				flex-direction: column;
 				justify-content: center;
 				gap: 10px;
-				// overflow: scroll;
 				.userChat {
 					display: flex;
 					align-items: center;
@@ -722,26 +720,10 @@ body {
 						box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
 							rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 						cursor: pointer;
-						.userChatInfo {
-							.rightInfo {
-								.count {
-									background-color: #ea4335;
-									display: inline-block;
-									min-width: 20px;
-									width: auto;
-									font-size: 10px;
-									font-style: italic;
-									color: #fff;
-									border-radius: 10px;
-									text-align: center;
-									padding: 3px 5px;
-								}
-							}
-						}
 					}
 				}
 			}
-			.search{
+			.search {
 				overflow: scroll;
 			}
 		}
@@ -756,7 +738,6 @@ body {
 			border-radius: 0px 0px 5px 5px;
 			overflow: hidden;
 			z-index: 1;
-			// position: relative;
 			.profile {
 				height: 100%;
 				width: 100%;
@@ -791,7 +772,6 @@ body {
 					margin-top: 10%;
 					display: flex;
 					flex-direction: column;
-					// align-items: center;
 					justify-content: center;
 					img {
 						border-radius: 50%;
@@ -838,7 +818,6 @@ body {
 								border: none;
 								background: transparent;
 								border-bottom: 2px solid #dce1ed;
-								// border-radius: 5px;
 								transition: border-color 0.2s ease;
 								&::placeholder {
 									color: #a9acb3;
@@ -986,6 +965,7 @@ body {
 									color: #fff;
 									background-color: #e24fa0;
 									border-radius: 8px 0px 8px 8px;
+									margin-bottom: 0px;
 								}
 								.chatMedia {
 									border-radius: 8px 0px 8px 8px;
@@ -1000,7 +980,6 @@ body {
 				background-color: #fff;
 				display: flex;
 				justify-content: space-between;
-				// z-index: 3;
 				input {
 					padding: 20px 20px;
 					width: 100%;
@@ -1034,6 +1013,19 @@ body {
 			font-size: 12px;
 			color: #747474;
 			font-style: italic;
+		}
+		.count {
+			background-color: #ea4335;
+			display: inline-block;
+			min-width: 20px;
+			width: auto;
+			font-size: 10px;
+			font-style: italic;
+			color: #fff;
+			border-radius: 10px;
+			text-align: center;
+			padding: 3px 5px;
+			font-size: 900;
 		}
 	}
 }
@@ -1106,10 +1098,10 @@ body {
 			}
 		}
 	}
-	.menu-Info{
+	.menu-Info {
 		display: flex;
 		flex-direction: column;
-		.menu-item{
+		.menu-item {
 			display: flex;
 			padding: 10px;
 			width: 100%;
@@ -1120,10 +1112,10 @@ body {
 			&:hover {
 				background-color: #dce1ed;
 			}
-			.label{
+			.label {
 				width: 90%;
 			}
-			.icon{
+			.icon {
 				width: 10%;
 			}
 		}
@@ -1135,11 +1127,11 @@ body {
 		align-items: center;
 		font-size: 14px;
 		padding: 10px;
-		border-top:  1px solid #74747471;
+		border-top: 1px solid #74747471;
 		&:hover {
 			background-color: #dce1ed;
 		}
-		.label{
+		.label {
 			cursor: pointer;
 			width: 90%;
 		}
@@ -1149,8 +1141,8 @@ body {
 		}
 	}
 }
-.chat{
-	.menu-bar{
+.chat {
+	.menu-bar {
 		margin-top: 70px;
 	}
 }
@@ -1160,13 +1152,8 @@ body {
 	left: 0;
 	width: 50%;
 	height: 100%;
-	z-index: 3; 
-	background-color: rgba(
-		246,
-		247,
-		251,
-		0.3
-	); 
+	z-index: 3;
+	background-color: rgba(246, 247, 251, 0.3);
 }
 .menuBarBackdrop {
 	position: fixed;
@@ -1174,7 +1161,7 @@ body {
 	left: 0;
 	width: 50%;
 	height: 100%;
-	z-index: 1; 
+	z-index: 1;
 }
 
 /* Medium and Small Screens */
@@ -1237,12 +1224,10 @@ body {
 			.side-bar {
 				width: 80%;
 				height: 90vh;
-				// display: none;
 			}
 			.chat {
 				width: 80%;
 				height: 90vh;
-				// display: block;
 			}
 		}
 	}
@@ -1277,19 +1262,17 @@ body {
 			.side-bar {
 				width: 70%;
 				height: 90vh;
-				// display: none;
 			}
 			.chat {
 				width: 70%;
 				height: 90vh;
-				// display: block;
 			}
 		}
 	}
 }
 
-@media (min-width: 901px){
-	.menu-bar{
+@media (min-width: 901px) {
+	.menu-bar {
 		margin-top: 70px;
 	}
 }

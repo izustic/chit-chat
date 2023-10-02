@@ -1,8 +1,8 @@
 import {
+	faCircleCheck,
 	faCircleExclamation,
-	faUpload,
 	faHourglassStart,
-	faCircleCheck
+	faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -15,7 +15,7 @@ import { auth, db, storage } from "../firebase";
 
 const Register = () => {
 	const [err, setErr] = useState(false);
-	const [uploading, setUploading] = useState(false); 
+	const [uploading, setUploading] = useState(false);
 	const [uploadSuccess, setUploadSuccess] = useState(false);
 	const navigate = useNavigate();
 
@@ -86,7 +86,6 @@ const Register = () => {
 	};
 	return (
 		<>
-			{/* {console.log("RENDER REGISTER PAGE")} */}
 			<div className="formContainer">
 				<div className="registerLeftWrap">
 					<div className="logoWrap">
@@ -148,7 +147,8 @@ const Register = () => {
 									</div>
 								</span>
 							)}
-							{uploadSuccess && 	<span
+							{uploadSuccess && (
+								<span
 									style={{
 										width: "100%",
 										background: "transparent",
@@ -173,7 +173,8 @@ const Register = () => {
 										<FontAwesomeIcon icon={faCircleCheck} />
 										<p>Image Uploaded Successfully!</p>
 									</div>
-								</span>}
+								</span>
+							)}
 							{err && (
 								<span
 									style={{

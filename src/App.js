@@ -28,7 +28,6 @@ function App() {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
-	// console.log("RENDER APP JS");
 	return (
 		<BrowserRouter>
 			<Routes>
