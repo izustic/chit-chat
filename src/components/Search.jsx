@@ -39,6 +39,7 @@ const Search = ({ onSearch }) => {
 				const q = query(usersCollection, where("displayName", ">=", queryText));
 				const querySnapshot = await getDocs(q);
 				if (querySnapshot.empty) {
+					setErr(true);
 				} else {
 					const matchingUsers = querySnapshot.docs.map((doc) => doc.data());
 					setFilteredUsers(matchingUsers);
