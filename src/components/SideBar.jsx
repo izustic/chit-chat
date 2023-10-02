@@ -12,14 +12,12 @@ const SideBar = ({
 	showProfileWindow,
 }) => {
 	const [isSearching, setIsSearching] = useState(false);
-	const [filteredChats, setFilteredChats] = useState([]);
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
 
 	const profileMenuItems = [{}];
 
 	const handleSearch = (searching, chats) => {
 		setIsSearching(searching);
-		setFilteredChats(chats);
 	};
 
 	// Function to toggle the visibility of MenuBar

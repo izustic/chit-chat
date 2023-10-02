@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { ChatContext } from "../context/ChatContext";
-import useUserData from "../userInfo";
 import { chatMenuItems } from "./ChatMenuItems";
 import Input from "./Input";
 import MenuBar from "./MenuBar";
@@ -19,7 +18,6 @@ const Chat = ({
 	const [isMenuBarVisible, setIsMenuBarVisible] = useState(false);
 	const { data } = useContext(ChatContext);
 	useContext(AuthContext);
-	const userData = useUserData();
 
 	const toggleMenuBar = () => {
 		setIsMenuBarVisible(!isMenuBarVisible);
